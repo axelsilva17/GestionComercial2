@@ -1,0 +1,48 @@
+# Local Pi runtime state
+.atl/
+
+# .NET build artifacts
+**/bin/
+**/obj/
+**/Properties/launchSettings.json
+
+# User files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Databases
+*.db
+*.db-wal
+*.db-shm
+*.mdf
+*.ldf
+*.sqlite
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+*.log.*
+
+# IDE / editor
+.vs/
+.vscode/
+.idea/
+.vs/
+
+# Vite / React build artifacts
+node_modules/
+dist/
+build/
+.vite/
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+$Recycle.Bin/
