@@ -1,8 +1,8 @@
 # GestionComercial Design System
 
 **Version:** 1.0.0 (T1/T2 contract)  
-**Last updated:** 2026-09-30  
-**Status:** Source of truth. The executable form of these tokens lives in `gestioncomercial-web/src/index.css`.
+**Last updated:** 2026-10-01 (+logo G2, paleta azul oscuro/cian)
+**Status:** Source of truth. Logo `LogoG2_definitivo.png`; paleta siguiendo logo: `#0a223a` (canvas), `#122b45` (surface), `#2faee0` (accent), `#e8ebf0` (ink).
 
 This document is the human-readable contract. `src/components/` must compose against it; if a primitive cannot satisfy a requirement without breaking a rule, update this document first and the code second. Nothing in this document is aspirational: the primitives that exist are documented, and anything undocumented does not exist.
 

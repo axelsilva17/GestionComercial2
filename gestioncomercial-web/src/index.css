@@ -1,111 +1,385 @@
+/* =============================================================================
+   GestionComercial -- design tokens
+   =============================================================================
+
+   Single source of truth for the visual language. `DESIGN.md` at the repository
+   root is the human-readable contract; this file is its executable form.
+
+   Structure (Tailwind CSS v4, CSS-first configuration -- no tailwind.config.js):
+
+     1. `@import "tailwindcss"`  -- activates the engine.
+     2. `:root` / media query     -- RAW palette values, per color scheme.
+     3. `@theme inline`          -- maps raw values onto SEMANTIC token names.
+                                     Utilities resolve to `var(--gc-*)`, so the
+                                     dark-mode block re-themes every surface at
+                                     runtime without a single `dark:` variant.
+     4. `@theme`                 -- non-color tokens (type, radius, elevation,
+                                     motion, z-index). These are scheme-invariant
+                                     and therefore do not need `inline`.
+     5. `@layer base`            -- element defaults and global safety nets.
+
+   RULE: components never write a raw hex, px, or duration. They reference the
+   semantic token. See DESIGN.md > Anti-patterns.
+   ========================================================================== */
+
+@import 'tailwindcss';
+
+/* -----------------------------------------------------------------------------
+   1. RAW PALETTE -- per color scheme.
+   These are private implementation details. Nothing outside this block may use
+   them; the semantic layer below is the only public surface.
+   -------------------------------------------------------------------------- */
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  color-scheme: light;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* Text tiers. Declared as discrete roles rather than steps of one ramp: a
+     single "neutral" ramp cannot serve text, control boundaries, and decorative
+     dividers at once, because the last one wants to be nearly invisible and the
+     first two must clear 4.5:1 and 3:1 respectively. */
+  --gc-r-ink: #e8ebf0;
+  --gc-r-ink-muted: #334155;
+  --gc-r-ink-subtle: #475569;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Decorative hairlines: card borders, table row rules, section dividers.
+     These carry no state and are exempt from the 3:1 non-text rule. */
+  --gc-r-line: #e6e8ea;
+  --gc-r-line-strong: #cbd5e1;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  /* Control boundaries. WCAG 1.4.11 requires 3:1 against the control's own
+     fill, which a #E6E8EA hairline cannot reach (1.48:1 on white). Every input
+     border therefore uses this step: 4.76:1 on white. */
+  --gc-r-line-control: #64748b;
+  --gc-r-line-control-hover: #475569;
+
+  /* Card surface. Distinct from the canvas in light mode; in dark mode the card
+     lifts off the canvas instead of dropping below it. */
+  --gc-r-canvas: #0a223a;
+  --gc-r-surface: #122b45;
+  --gc-r-surface-sunken: #f1f5f9;
+  --gc-r-surface-hover: #f8fafc;
+  --gc-r-overlay: rgb(15 23 42 / 0.48);
+
+  /* Accent ramp (emerald family). "Stock green". */
+  --gc-r-accent-400: #2faee0;
+  --gc-r-accent-500: #2faee0;
+  --gc-r-accent-600: #1e8fd4;
+  --gc-r-accent-700: #166db8;
+  --gc-r-accent-800: #065f46;
+  --gc-r-accent-900: #064e3b;
+  --gc-r-accent-50: #ecfdf5;
+
+  /* Destructive ramp (red family). */
+  --gc-r-danger-50: #fef2f2;
+  --gc-r-danger-600: #dc2626;
+  --gc-r-danger-700: #b91c1c;
+  --gc-r-danger-800: #991b1b;
+
+  /* Warning ramp (amber family) -- "stock at minimum". */
+  --gc-r-warning-50: #fffbeb;
+  --gc-r-warning-700: #b45309;
+  --gc-r-warning-800: #92400e;
+
+  /* Informational ramp (sky family). */
+  --gc-r-info-50: #f0f9ff;
+  --gc-r-info-700: #0369a1;
+  --gc-r-info-800: #075985;
+
+  /* Neutral chrome: sidebar item, focusable-but-not-accent. */
+  --gc-r-primary: #334155;
+  --gc-r-primary-hover: #1e293b;
+  --gc-r-primary-active: #0f172a;
+  --gc-r-primary-ink: #ffffff;
+  --gc-r-primary-subtle: #f1f5f9;
+  --gc-r-primary-subtle-ink: #1e293b;
+
+  --gc-r-disabled-bg: #f1f5f9;
+  --gc-r-disabled-ink: #475569;
+  --gc-r-disabled-line: #cbd5e1;
+
+  --gc-r-focus: #047857;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+    color-scheme: dark;
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
+    --gc-r-ink: #e7edf5;
+    --gc-r-ink-muted: #cbd5e1;
+    --gc-r-ink-subtle: #a3b1c4;
 
-body {
-  margin: 0;
-}
+    --gc-r-line: #24324a;
+    --gc-r-line-strong: #35455f;
+    --gc-r-line-control: #7d8ca0;
+    --gc-r-line-control-hover: #94a3b8;
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
+    --gc-r-surface: #131e31;
+    --gc-r-canvas: #0b1120;
+    --gc-r-surface-sunken: #0f1929;
+    --gc-r-surface-hover: #1b2739;
+    --gc-r-overlay: rgb(2 6 16 / 0.66);
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
+    /* Accent inverts direction: the light-mode CTA step is too dark to carry
+       dark text on a dark canvas, so the ramp steps back up. */
+    --gc-r-accent-400: #059669;
+    --gc-r-accent-500: #2faee0;
+    --gc-r-accent-600: #34d399;
+    --gc-r-accent-700: #6ee7b7;
+    --gc-r-accent-800: #a7f3d0;
+    --gc-r-accent-900: #d1fae5;
+    --gc-r-accent-50: #06342a;
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
+    --gc-r-danger-50: #3b1416;
+    --gc-r-danger-600: #f87171;
+    --gc-r-danger-700: #fecaca;
+    --gc-r-danger-800: #fee2e2;
+
+    --gc-r-warning-50: #3a2408;
+    --gc-r-warning-700: #fcd34d;
+    --gc-r-warning-800: #fde68a;
+
+    --gc-r-info-50: #082f49;
+    --gc-r-info-700: #7dd3fc;
+    --gc-r-info-800: #bae6fd;
+
+    /* Primary inverts: in dark mode the "solid" surface becomes a light fill
+       carrying dark text, which is what keeps it from glowing. */
+    --gc-r-primary: #e2e8f0;
+    --gc-r-primary-hover: #f1f5f9;
+    --gc-r-primary-active: #f8fafc;
+    --gc-r-primary-ink: #0b1120;
+    --gc-r-primary-subtle: #1b2739;
+    --gc-r-primary-subtle-ink: #cbd5e1;
+
+    --gc-r-disabled-bg: #1b2739;
+    --gc-r-disabled-ink: #7d8ca0;
+    --gc-r-disabled-line: #35455f;
+
+    --gc-r-focus: #34d399;
   }
 }
-p {
-  margin: 0;
+
+/* -----------------------------------------------------------------------------
+   2. SEMANTIC TOKENS
+   Utilities resolve to `var(--gc-*)` (thanks to `inline`), so the dark-mode block
+   above re-themes the whole application with no `dark:` variant anywhere.
+
+   Measured WCAG 2.1 contrast ratios are recorded in DESIGN.md and were computed
+   from these exact values, not estimated.
+   -------------------------------------------------------------------------- */
+
+@theme inline {
+  /* -- Surfaces ------------------------------------------------------------ */
+  --color-canvas: var(--gc-r-canvas);
+  --color-surface: var(--gc-r-surface);
+  --color-surface-sunken: var(--gc-r-surface-sunken);
+  --color-surface-hover: var(--gc-r-surface-hover);
+  --color-overlay: var(--gc-r-overlay);
+
+  /* -- Text ---------------------------------------------------------------- */
+  --color-ink: var(--gc-r-ink);
+  --color-ink-muted: var(--gc-r-ink-muted);
+  --color-ink-subtle: var(--gc-r-ink-subtle);
+  --color-ink-inverse: var(--gc-r-primary-ink);
+  --color-ink-on-dark: var(--gc-r-primary-ink);
+  /* The one theme-invariant foreground. An overlay is always dark, in both
+     schemes, so anything drawn on top of a scrim uses this and nothing else. */
+  --color-ink-on-overlay: #ffffff;
+
+  /* -- Lines --------------------------------------------------------------- */
+  /* Decorative: dividers, table rules, card borders. */
+  --color-line: var(--gc-r-line);
+  --color-line-strong: var(--gc-r-line-strong);
+  /* Control boundary: the border of an input, select, or checkbox. */
+  --color-line-control: var(--gc-r-line-control);
+  --color-line-control-hover: var(--gc-r-line-control-hover);
+
+  /* -- Primary (slate: neutral chrome, instrument-panel read) --------------- */
+  --color-primary: var(--gc-r-primary);
+  --color-primary-hover: var(--gc-r-primary-hover);
+  --color-primary-active: var(--gc-r-primary-active);
+  --color-primary-ink: var(--gc-r-primary-ink);
+  --color-primary-subtle: var(--gc-r-primary-subtle);
+  --color-primary-subtle-ink: var(--gc-r-primary-subtle-ink);
+
+  /* -- Accent (stock green: CTA + "in stock") ------------------------------ */
+  --color-accent: var(--gc-r-accent-600);
+  --color-accent-hover: var(--gc-r-accent-500);
+  --color-accent-active: var(--gc-r-accent-400);
+  /* `accent-strong` is the step that actually carries white text. #059669 with
+     white is 3.77:1 and fails; #047857 is 5.48:1 and passes. See DESIGN.md. */
+  --color-accent-strong: var(--gc-r-accent-700);
+  --color-accent-strong-hover: var(--gc-r-accent-800);
+  --color-accent-strong-active: var(--gc-r-accent-900);
+  --color-accent-ink: var(--gc-r-accent-800);
+  --color-accent-subtle: var(--gc-r-accent-50);
+
+  /* -- Destructive --------------------------------------------------------- */
+  --color-danger: var(--gc-r-danger-600);
+  --color-danger-hover: var(--gc-r-danger-700);
+  --color-danger-ink: var(--gc-r-danger-700);
+  --color-danger-subtle: var(--gc-r-danger-50);
+
+  /* -- Warning / info ------------------------------------------------------ */
+  --color-warning-ink: var(--gc-r-warning-700);
+  --color-warning-subtle: var(--gc-r-warning-50);
+  --color-info-ink: var(--gc-r-info-700);
+  --color-info-subtle: var(--gc-r-info-50);
+
+  /* -- Focus --------------------------------------------------------------- */
+  --color-focus: var(--gc-r-focus);
+
+  /* -- Disabled ------------------------------------------------------------ */
+  --color-disabled-bg: var(--gc-r-disabled-bg);
+  --color-disabled-ink: var(--gc-r-disabled-ink);
+  --color-disabled-line: var(--gc-r-disabled-line);
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+/* -----------------------------------------------------------------------------
+   3. SCHEME-INVARIANT TOKENS
+   -------------------------------------------------------------------------- */
+
+@theme {
+  /* -- Typography ----------------------------------------------------------
+     Fira Sans for UI, Fira Code for anything that has to align in a column.
+     Loaded from Google Fonts in index.html. */
+  --font-sans:
+    'Fira Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:
+    'Fira Code', ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Consolas,
+    monospace;
+
+  /* Type scale. Each step carries its own line height and tracking so a single
+     `text-*` utility is the whole decision. See DESIGN.md > Typography. */
+  --text-display: 2rem;
+  --text-display--line-height: 2.5rem;
+  --text-display--letter-spacing: -0.02em;
+  --text-display--font-weight: 600;
+
+  --text-title: 1.375rem;
+  --text-title--line-height: 1.875rem;
+  --text-title--letter-spacing: -0.01em;
+  --text-title--font-weight: 600;
+
+  --text-heading: 1.0625rem;
+  --text-heading--line-height: 1.5rem;
+  --text-heading--font-weight: 600;
+
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.5rem;
+
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.125rem;
+  --text-label--font-weight: 500;
+
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1rem;
+
+  --text-mono: 0.8125rem;
+  --text-mono--line-height: 1.25rem;
+
+  --text-mono-sm: 0.75rem;
+  --text-mono-sm--line-height: 1rem;
+
+  /* -- Spacing -------------------------------------------------------------
+     A 4px base. Every utility multiple is on the rhythm: 1=4, 2=8, 3=12, 4=16,
+     5=20, 6=24, 8=32, 10=40, 12=48, 16=64 px. */
+  --spacing: 0.25rem;
+
+  /* -- Density ------------------------------------------------------------- */
+  --density-row-default: 2.75rem;
+  --density-row-compact: 2.25rem;
+
+  /* -- Radius -------------------------------------------------------------- */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+
+  /* -- Elevation ------------------------------------------------------------
+     Four steps, no blurred glows and no multi-layer "realistic" stacks. Elevation
+     signals layer order only. */
+  --shadow-none: none;
+  --shadow-xs: 0 1px 2px 0 rgb(15 23 42 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(15 23 42 / 0.08);
+  --shadow-md: 0 4px 12px -2px rgb(15 23 42 / 0.1);
+  --shadow-lg: 0 12px 32px -8px rgb(15 23 42 / 0.18);
+
+  /* -- Motion --------------------------------------------------------------- */
+  --gc-duration-fast: 120ms;
+  --gc-duration-base: 180ms;
+  --gc-ease-ui: cubic-bezier(0.2, 0, 0, 1);
+
+  --animate-toast-in: toast-in var(--gc-duration-base) var(--gc-ease-ui);
+
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* -- Z-index -------------------------------------------------------------- */
+  --gc-z-header: 30;
+  --gc-z-sticky: 20;
+  --gc-z-dropdown: 40;
+  --gc-z-dialog: 50;
+  --gc-z-toast: 60;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+/* -----------------------------------------------------------------------------
+   4. BASE LAYER
+   -------------------------------------------------------------------------- */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Numerals that live in a column must share a width. Applied globally to the
+     mono font and opted into per-cell by the `tabular` data attribute, so a
+     price never shifts a neighbouring column. */
+  [data-tabular] {
+    font-variant-numeric: tabular-nums slashed-zero;
+  }
+
+  /* The one focus contract for the whole application. `outline-offset` keeps the
+     ring outside the element, so it is always measured against the surrounding
+     surface (canvas or card) rather than against the control's own fill. */
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  /* Never remove a focus ring; only replace it with this one. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Safety net for the reduced-motion contract. Components additionally gate
+     animated utilities behind Tailwind's `motion-safe:` variant, but any future
+     transition added without that discipline is still neutralised here. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
