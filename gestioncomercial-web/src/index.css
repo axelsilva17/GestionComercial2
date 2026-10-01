@@ -70,10 +70,10 @@
   --gc-r-accent-50: #ecfdf5;
 
   /* Destructive ramp (red family). */
-  --gc-r-danger-50: #fef2f2;
-  --gc-r-danger-600: #dc2626;
-  --gc-r-danger-700: #b91c1c;
-  --gc-r-danger-800: #991b1b;
+  --gc-r-danger-50: #e8f0fa;
+  --gc-r-danger-600: #1e8fd4;
+  --gc-r-danger-700: #166db8;
+  --gc-r-danger-800: #0a223a;
 
   /* Warning ramp (amber family) -- "stock at minimum". */
   --gc-r-warning-50: #fffbeb;
@@ -129,10 +129,10 @@
     --gc-r-accent-900: #d1fae5;
     --gc-r-accent-50: #06342a;
 
-    --gc-r-danger-50: #3b1416;
-    --gc-r-danger-600: #f87171;
-    --gc-r-danger-700: #fecaca;
-    --gc-r-danger-800: #fee2e2;
+    --gc-r-danger-50: #122b45;
+    --gc-r-danger-600: #2faee0;
+    --gc-r-danger-700: #1e8fd4;
+    --gc-r-danger-800: #e8ebf0;
 
     --gc-r-warning-50: #3a2408;
     --gc-r-warning-700: #fcd34d;

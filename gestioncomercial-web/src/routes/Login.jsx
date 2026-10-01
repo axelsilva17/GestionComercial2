@@ -118,7 +118,17 @@ export function Login() {
     // `my-auto` on the child, not `justify-center` on the parent: when the form
     // is taller than a 375x667 viewport, auto margins keep the top of the card
     // reachable instead of pushing it off-screen where it cannot be scrolled to.
-    <div className="flex min-h-dvh flex-col bg-canvas p-4 sm:p-6">
+    <div className="flex min-h-dvh flex-col bg-canvas p-4 sm:p-6 relative overflow-hidden">
+      {/* Fondo visual: logo G2 con opacidad baja + gradiente oscuro --> legible --> */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-[-1] bg-cover bg-center opacity-[0.06] blur-[2px]"
+        style={{ backgroundImage: 'url("/LogoG2_definitivo.png")' }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-[-1] bg-gradient-to-b from-canvas/90 via-canvas/60 to-canvas"
+      />
       <div className="my-auto mx-auto w-full max-w-md">
         <div className="mb-6 flex flex-col items-center gap-2 text-center">
           <img
