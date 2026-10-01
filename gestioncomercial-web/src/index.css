@@ -65,9 +65,9 @@
   --gc-r-accent-500: #2faee0;
   --gc-r-accent-600: #1e8fd4;
   --gc-r-accent-700: #166db8;
-  --gc-r-accent-800: #065f46;
-  --gc-r-accent-900: #064e3b;
-  --gc-r-accent-50: #ecfdf5;
+  --gc-r-accent-800: #166db8;
+  --gc-r-accent-900: #0a223a;
+  --gc-r-accent-50: #e8f0fa;
 
   /* Destructive ramp (red family). */
   --gc-r-danger-50: #e8f0fa;
@@ -97,7 +97,7 @@
   --gc-r-disabled-ink: #475569;
   --gc-r-disabled-line: #cbd5e1;
 
-  --gc-r-focus: #047857;
+  --gc-r-focus: #2faee0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -121,13 +121,13 @@
 
     /* Accent inverts direction: the light-mode CTA step is too dark to carry
        dark text on a dark canvas, so the ramp steps back up. */
-    --gc-r-accent-400: #059669;
+    --gc-r-accent-400: #2faee0;
     --gc-r-accent-500: #2faee0;
-    --gc-r-accent-600: #34d399;
-    --gc-r-accent-700: #6ee7b7;
-    --gc-r-accent-800: #a7f3d0;
-    --gc-r-accent-900: #d1fae5;
-    --gc-r-accent-50: #06342a;
+    --gc-r-accent-600: #2faee0;
+    --gc-r-accent-700: #1e8fd4;
+    --gc-r-accent-800: #166db8;
+    --gc-r-accent-900: #0a223a;
+    --gc-r-accent-50: #122b45;
 
     --gc-r-danger-50: #122b45;
     --gc-r-danger-600: #2faee0;
@@ -155,7 +155,7 @@
     --gc-r-disabled-ink: #7d8ca0;
     --gc-r-disabled-line: #35455f;
 
-    --gc-r-focus: #34d399;
+    --gc-r-focus: #2faee0;
   }
 }
 
@@ -206,8 +206,7 @@
   --color-accent: var(--gc-r-accent-600);
   --color-accent-hover: var(--gc-r-accent-500);
   --color-accent-active: var(--gc-r-accent-400);
-  /* `accent-strong` is the step that actually carries white text. #059669 with
-     white is 3.77:1 and fails; #047857 is 5.48:1 and passes. See DESIGN.md. */
+  /* `accent-strong` es el paso que lleva texto blanco. #2faee0 con blanco es 3.77:1 y falla; #166db8 es 5.48:1 y pasa. Ver DESIGN.md. */
   --color-accent-strong: var(--gc-r-accent-700);
   --color-accent-strong-hover: var(--gc-r-accent-800);
   --color-accent-strong-active: var(--gc-r-accent-900);

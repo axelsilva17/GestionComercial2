@@ -11,7 +11,7 @@ import { Loader2 } from 'lucide-react'
 
 /** Shared shape. Focus is not here on purpose: the base layer owns the ring. */
 const BASE =
-  'inline-flex items-center justify-center gap-2 rounded-md border font-medium ' +
+  'inline-flex items-center cursor-pointer justify-center gap-2 rounded-md border font-medium ' +
   'transition-colors duration-[var(--gc-duration-fast)] ease-[var(--gc-ease-ui)] ' +
   'disabled:cursor-not-allowed'
 

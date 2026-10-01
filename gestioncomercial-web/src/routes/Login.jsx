@@ -32,10 +32,10 @@ import { CREDENCIALES_DEMO, signIn } from '../data/auth.js'
 
 /** Copy in Spanish. The entity messages in `Producto.cs` set the precedent. */
 const ERRORES = {
-  emailVacio: 'Ingresá tu usuario o correo electrónico.',
-  emailInvalido: 'El correo electrónico no tiene un formato válido.',
-  passwordVacia: 'Ingresá tu contraseña.',
-  passwordCorta: 'La contraseña debe tener al menos 8 caracteres.',
+  emailVacio: "credenciales incorrectas",
+  emailInvalido: "credenciales incorrectas",
+  passwordVacia: "credenciales incorrectas",
+  passwordCorta: "credenciales incorrectas",
 }
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/

@@ -28,7 +28,7 @@ function NavItems({ onNavigate }) {
           onClick={onNavigate}
           className={({ isActive }) =>
             [
-              'flex min-h-11 items-center gap-3 rounded-md px-3 text-label',
+              'flex min-h-11 items-center gap-3 rounded-md px-3 text-label cursor-pointer',
               'transition-colors duration-[var(--gc-duration-fast)]',
               isActive
                 ? 'bg-accent-strong text-ink-inverse'
