@@ -41,6 +41,11 @@ builder.Services.AddAuthentication(options =>
 
 // --- Services ---
 builder.Services.AddScoped<TenantMiddleware>();
+// --- Services por capa (Clean Architecture, no addEverything) ---
+builder.Services.AddDomainServices();
+builder.Services.AddApplicationServices(); // B: clave + Envío
+builder.Services.AddInfrastructureServices();  // adaptadores reservados
+builder.Services.AddApiServices();            // Web/API
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
