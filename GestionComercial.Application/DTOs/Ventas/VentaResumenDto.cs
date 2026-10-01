@@ -1,0 +1,1 @@
+namespace GestionComercial.Aplicacion.DTOs.Ventas; using System; public class VentaResumenDto { public int IdVenta { get; set; } public DateTime Fecha { get; set; } public int IdSucursal { get; set; } public decimal Total { get; set; } public int Estado { get; set; } public string ClienteNombre { get; set; } = string.Empty; }

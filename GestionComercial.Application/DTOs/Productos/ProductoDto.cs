@@ -1,0 +1,1 @@
+namespace GestionComercial.Aplicacion.DTOs.Productos; public class ProductoDto { public int IdProducto { get; set; } public string Nombre { get; set; } = string.Empty; public decimal PrecioVentaActual { get; set; } public int StockActual { get; set; } public bool Activo { get; set; } public string Inicial => string.IsNullOrEmpty(Nombre) ? "?" : Nombre[0].ToString().ToUpper(); }
