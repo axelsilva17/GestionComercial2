@@ -6,6 +6,11 @@
 **/obj/
 **/Properties/launchSettings.json
 
+# OpenCode / ODD
+/odd/tasks/
+/AGENTS.md
+/DESIGN.md
+
 # User files
 *.user
 *.suo
