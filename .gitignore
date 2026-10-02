@@ -6,6 +6,11 @@
 **/obj/
 **/Properties/launchSettings.json
 
+# OpenCode / ODD
+/odd/tasks/
+/AGENTS.md
+/DESIGN.md
+
 # User files
 *.user
 *.suo
@@ -46,7 +51,15 @@ build/
 .DS_Store
 Thumbs.db
 $Recycle.Bin/
+<<<<<<< HEAD
 /AGENTS.md
 /DESIGN.md
 
 /odd/tasks/
+=======
+>>>>>>> 79e4b5fd9682b1538ccb6b982b52e22679bb41a1
+
+# ODD
+/odd/tasks/
+/AGENTS.md
+/DESIGN.md
